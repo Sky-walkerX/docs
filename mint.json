@@ -24,6 +24,14 @@
         "BackendRoadmap",
         "Security&Optimization"
       ]
+    },
+    {
+      "group": "Linux Guides",
+      "pages": [
+        "LinuxGuides/archLinux",
+        "LinuxGuides/linuxMint",
+        "LinuxGuides/fedora"
+      ]
     }
   ],
   "footerSocials": {

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "My Docs",
+  "colors": {
+    "primary": "#0D9373",
+    "light": "#07C983",
+    "dark": "#0D9373"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Javascript behind the scences",
+        "pages": [
+          "executionContext",
+          "executionContext2"
+        ]
+      },
+      {
+        "group": "Backend Design",
+        "pages": [
+          "BackendRoadmap",
+          "Security&Optimization"
+        ]
+      },
+      {
+        "group": "Linux Guides",
+        "pages": [
+          "LinuxGuides/archLinux",
+          "LinuxGuides/linuxMint",
+          "LinuxGuides/fedora"
+        ]
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/Jovial-Kanwadia",
+      "linkedin": "https://www.linkedin.com/in/jovial-kanwadia-63a8ab298/"
+    }
+  }
+}
