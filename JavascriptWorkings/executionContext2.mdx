@@ -19,14 +19,9 @@ greet();
 ### Variable hoisting inside Declarative Record
 
 <img
-  className="block dark:hidden"
-  src="/images/CreationPhase1.png"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/CreationPhase1.png"
-  alt="Hero Dark"
+  className="block rounded-lg"
+  src="/images/JavascriptWorkings/CreationPhase1.png"
+  alt="Creation Phase 1"
 />
 
 First when variables are declared they use Global Execution Context -> Lexical Environment which points to Global Environment Record -> Declarative Record to handle the identifier bindings created with let and const keywords.
@@ -38,14 +33,9 @@ Note: During creation phase of const and let variable and classes they are unini
 Next we have function greet which is handled by the Object Record inside Global Environment Record. Functions are initialized during the creation phase. So a new function object is created for greet.
 
 <img
-  className="block dark:hidden"
-  src="/images/CreationPhase2.png"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/CreationPhase2.png"
-  alt="Hero Dark"
+  className="block rounded-lg"
+  src="/images/JavascriptWorkings/CreationPhase2.png"
+  alt="Creation Phase 2"
 />
 
 1. Environment: It points to the environment record in which it was declared. In this case it is Global Environment Record.
@@ -61,27 +51,17 @@ Now the let and const variables get initialized and gets their assigned value st
 Here the call method in the function object is called which creates a new Function Execution Context.
 
 <img
-  className="block dark:hidden"
-  src="/images/ExecutionPhase1.png"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/ExecutionPhase1.png"
-  alt="Hero Dark"
+  className="block rounded-lg"
+  src="/images/JavascriptWorkings/ExecutionPhase1.png"
+  alt="Execution Phase 1"
 />
 
 Similar to Global Execution Context it also has the same structure and goes through two phases Creation and Execution. But this time Lexical Environment points to Function Environment Record -> Declarative Record and manages the identifier bindings for variables, parameters, function declarations etc within the function. Also we have function parameters which are added to Declarative Record and are immediately initialized with the value but the const and let variables are not.
 
 <img
-  className="block dark:hidden"
-  src="/images/ExecutionPhase2.png"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/ExecutionPhase2.png"
-  alt="Hero Dark"
+  className="block rounded-lg"
+  src="/images/JavascriptWorkings/ExecutionPhase2.png"
+  alt="Execution Phase 2"
 />
 
 It also has Outer Env property which points to the environment in which the function was invoked in. Which in this case is Global Environment Record (Remember in case of the Global execution Context it was null). This property will help us access values in the scope chain(meaning the outer environments).
@@ -89,14 +69,9 @@ It also has Outer Env property which points to the environment in which the func
 ### Function Execution Phase
 
 <img
-  className="block dark:hidden"
-  src="/images/ExecutionPhase3.png"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/ExecutionPhase3.png"
-  alt="Hero Dark"
+  className="block rounded-lg"
+  src="/images/JavascriptWorkings/ExecutionPhase3.png"
+  alt="Execution Phase 3"
 />
 
 Now the function execution context is also added tho the call stack. To initialize the value of "fullName" it needs the parameter "firstname" and variable "lastName". It has the identifier binding for the "firstName" but not for "lastName" so, it will use Outer Env property to look for "lastName" value through the chain of environments(scope chain).
