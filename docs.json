@@ -11,7 +11,7 @@
   "navigation": {
     "groups": [
       {
-        "group": "Javascript behind the scences",
+        "group": "Javascript behind the scenes",
         "pages": [
           "executionContext",
           "executionContext2"
