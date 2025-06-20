@@ -12,17 +12,25 @@
   },
   "navigation": [
     {
-      "group": "Javascript behind the scences",
+      "group": "Javascript behind the scenes",
       "pages": [
-        "executionContext",
-        "executionContext2"
+        "JavascriptWorkings/executionContext",
+        "JavascriptWorkings/executionContext2"
       ]
     },
     {
       "group": "Backend Design",
       "pages": [
-        "BackendRoadmap",
-        "Security&Optimization"
+        "BackendDesign/BackendRoadmap",
+        "BackendDesign/Security&Optimization"
+      ]
+    },
+    {
+      "group": "Linux Guides",
+      "pages": [
+        "LinuxGuides/fedora",
+        "LinuxGuides/linuxMint",
+        "LinuxGuides/archLinux"
       ]
     }
   ],

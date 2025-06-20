@@ -1,0 +1,345 @@
+---
+title: 'Arch Linux'
+description: "Minimal Arch Installation Guide, this one is a bit complex and dangerous so continue with caution. This'll be minimal install after which you'll need to install your own packages or someone else's dots using their installation scripts"
+---
+<Tip>
+I suggest not installing this until you are familiar enough with Linux and reading Docs
+Its partitioning step is very risky for Beginners
+</Tip>
+
+<img 
+    src="/images/LinuxGuides/ArchLinux-Logo.png"
+    alt="Arch Linux Logo"
+    className="rounded-lg"
+/>
+## Burning the ISO
+
+Download Arch linux iso file from https://archlinux.org
+
+Burn the downloaded iso into a pendrive or SD card using [Balena Etcher](https://etcher.balena.io/) _(great tool for beginners)_, [Rufus](https://rufus.ie/en/) or [Ventoy](https://www.ventoy.net/en/)
+
+Go into BIOS and disable Secure Boot
+## Boot Into the Pendrive
+Type the following commands
+```bash
+# Makes the font a bit bigger
+setfont ter-132n
+```
+```bash
+# A utility to help you connect to internet for now
+iwctl
+```
+```bash
+# Lists the available networking devices on your pc like wifi (generally wlan0) and ethernet
+device list
+```
+```bash
+# Lists the available wifi networks in the vicinity
+station wlan0 get-networks
+```
+```bash
+# Connects to the wifi with name 'WifiName' if given correct password
+station wlan0 connect WifiName
+```
+Type the passphrase/password
+
+```bash
+# Exit the iwctl utility
+exit
+```
+```bash
+# Clears the terminal
+clear
+```
+```bash
+# Updates the package database to the latest
+pacman -Sy
+```
+```bash
+pacman -S archlinux-keyring
+```
+## Partitioning
+<Warning>
+This is a very __delicate__ step, slightest mistakes will lead to complete wiping of your data so proceed with caution
+</Warning>
+```bash
+# Lets you see the partitions
+lsblk
+```
+```bash
+# A utility to help you partition your disks
+cfdisk /dev/nvme0n1
+```
+create 800M type EFI system partition
+
+create 8G (or whatever your ram is) type Linux swap partition
+
+create remaining type Linux filesystem partition
+
+write the changes to the disk and quit
+```bash
+# Formats the following partition as FAT-32 (File Access Table)
+mkfs.fat -F32 /dev/[efi_partition_name]
+```
+```bash
+# Formats the following partition as EXT4 (Extended File System)
+mkfs.ext4 /dev/[root_partition_name]
+```
+```bash
+# Formats the following partition as Swap for the Linux
+mkswap /dev/[swap_partition_name]
+```
+```bash
+# Mounts (Links) the Root partition to /mnt
+mount /dev/[root_partition_name] /mnt
+```
+```bash
+# Create a new directory named boot in /mnt
+mkdir /mnt/boot
+```
+```bash
+# Mount the EFI partition to this newly created boot folder
+mount /dev/[efi_partition_name] /mnt/boot
+```
+```bash
+# Start using the Swap
+swapon /dev/[swap_partition_name]
+```
+Check if they are mounted properly using lsblk command
+
+```bash
+# Install Some basic Utilities
+#   git                     => for version control
+#   sudo                    => for running commands as admin
+#   fastfetch               => view your system info
+#   bluez and bluez-utils   => for bluetooth support
+#   btop                    => task manager for linux
+#   nano                    => minimal terminal based text-editor
+
+# Replace intel-ucode with amd-ucode if you have an AMD Processor
+pacstrap -i /mnt base base-devel linux linux-firmware git sudo fastfetch btop intel-ucode nano bluez bluez-utils networkmanager
+```
+```bash
+# Generate default mounting configuration
+genfstab -U /mnt >> /mnt/etc/fstab
+```
+```bash
+# Display the File Contents (Just to check)
+cat /mnt/etc/fstab
+```
+```bash
+# Changes the root directory to /mnt i.e. our root partition which will be opened every time we boot into linux
+arch-chroot /mnt
+```
+```bash
+fastfetch
+```
+```bash
+# Sets the password for the ROOT user
+passwd
+```
+type the password
+
+```bash
+# Creates a New user and gives them permissions
+useradd -m -g users -G wheel,storage,power,video,audio -s /bin/bash [username]
+```
+```bash
+# Sets the password for the user with the given username
+passwd [username]
+```
+type the password
+
+```bash
+# Use nano editor and modify user and group permissions
+EDITOR=nano visudo
+```
+scroll and uncomment `%wheel ALL=(ALL:ALL) ALL`
+This will make the user with wheel group kind of like Administrator
+Ctrl+O to save changes, Ctrl+X to exit
+
+```bash
+# Login to the shell as the given user
+su - [username]
+```
+```bash
+# Updates the packages
+sudo pacman -Syu
+```
+```bash
+# Exit the user shell
+exit
+```
+```bash
+# Sets the local time of the pc to be GMT+0530 i.e. India
+ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+```
+```bash
+# Synchronize the system clock
+hwclock --systohc
+```
+```bash
+# Open the local.gen file so that we can generate locale files
+nano /etc/locale.gen
+```
+scroll and uncomment `en_US.UTF-8 UTF-8`
+
+```bash
+# Generate the locale based on locale.gen file
+locale-gen
+```
+```bash
+nano /etc/locale.conf
+```
+write `LANG=en_US.UTF-8`
+
+```bash
+# Sets the hostname for the Linux installation (I generally like to keep it archlinux)
+nano /etc/hostname
+```
+write `archlinux` or whatever you prefer
+
+```bash
+# Configure default hostname mappings with ip addresses
+nano /etc/hosts
+```
+type the following after 2 line gap 
+
+<img 
+    src="/images/LinuxGuides/ArchLinux-Hostnames.png" 
+    alt="Hosts File"
+    className="rounded-lg"
+/>
+```bash
+# Install packages required to set GRUB as bootloader
+pacman -S grub efibootmgr dosfstools mtools
+```
+```bash
+# Install GRUB
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+```
+```bash
+# Create/Update GRUB config based on /etc/default/grub
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+```bash
+# Enable Bluetooth service
+systemctl enable bluetooth
+```
+```bash
+# Enable Networking service i.e. Wifi/Ethernet
+systemctl enable NetworkManager
+```
+```bash
+# Exits
+exit
+```
+```bash
+umount -lR /mnt
+```
+```bash
+# Shutdown the PC
+shutdown now
+```
+Now Remove the USB drive and start the PC
+
+Boot into Arch Linux and then login with your username (case-sensetive)
+```bash
+# Doubles the font size
+setfont -d
+```
+```bash
+# Use Network Manager CLI to view device status
+nmcli dev status
+```
+```bash
+# Switch on the Wifi
+nmcli radio wifi on
+```
+```bash
+# List the available WiFi networks
+nmcli dev wifi list
+```
+```bash
+# Connect to the wifi with the name `WifiName` and password `WifiPass`
+sudo nmcli dev wifi connect WifiName password "WifiPass"
+```
+```bash
+# Update all the packages
+sudo pacman -Syu
+```
+```bash
+sudo nano /etc/default/grub
+```
+set grub timeout to 20 sec
+
+uncomment grub disable os prober = false
+This will make you able to boot into Windows
+you will see a new option in grub named "Windows..."
+
+write the changes and exit
+```bash
+# Update the grub config
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+And we are all done, now you can go install some dotfiles like the following
+
+## Dotfiles
+Files starting with a `.` are called Dotfiles, these are hidden and generally contain configurations and secrets
+
+### End-4 Dots
+<img 
+    src="/images/LinuxGuides/Dotfiles/End-4.png"
+    alt="ML4W Dotfile Screenshot"
+    className="rounded-lg"
+/>
+[Official Repo](https://github.com/end-4/dots-hyprland)
+```bash
+bash <(curl -s "https://end-4.github.io/dots-hyprland-wiki/setup.sh")
+```
+
+### HyDE (Formerly Hyprdots)
+<img 
+    src="/images/LinuxGuides/Dotfiles/HyDE.png"
+    alt="ML4W Dotfile Screenshot"
+    className="rounded-lg"
+/>
+[Official Repo](https://github.com/Hyde-project/hyde)
+```bash
+pacman -S --needed git base-devel
+git clone --depth 1 https://github.com/HyDE-Project/HyDE ~/HyDE
+cd ~/HyDE/Scripts
+./install.sh
+```
+
+### ML4W Dotfiles
+<img 
+    src="/images/LinuxGuides/Dotfiles/ML4W.png"
+    alt="ML4W Dotfile Screenshot"
+    className="rounded-lg"
+/>
+[Official Repo](https://github.com/mylinuxforwork/dotfiles)
+```bash
+bash -c "$(curl -s https://raw.githubusercontent.com/mylinuxforwork/dotfiles/main/setup-arch.sh)"
+```
+
+### Custom
+In case you are not installing any dotfiles, you can go with this minimal Hyprland Setup
+```bash
+# Package Details
+#   hyprland               => Desktop Environment
+#   dunst                  => Notification service
+#   kitty                  => Terminal application
+#   pipewire & wireplumber => Audio related packages
+#   nautilus               => File manager
+#   vlc                    => Media player
+#   ttf-* & noto-*         => Fonts
+#   hyprcursor             => Cursor for Hyprland
+#   firefox                => Web Browser
+#   libinput               => For Touchpad and Mouse
+#   sddm                   => Display Manager
+#   flatpak                => For intalling some extra applications available on flathub          
+
+sudo pacman -S hyprland dunst kitty xdg-desktop-portal-hyprland qt5-wayland qt6-wayland pipewire nautilus vlc clang cargo firefox noto-fonts noto-fonts-emoji ttf-dejavu ttf-font-awesome hyprlang hyprcursor polkit-kde-agent wireplumber libinput sddm flatpak
+```
