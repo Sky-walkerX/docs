@@ -52,7 +52,7 @@ Your USB is now ready to boot into Arch Linux.
 1. Open Disk Management (Win + X → Disk Management)
 2. Right-click C: → Shrink Volume
 3. Enter amount in MB, ideal is to shrink around 50GB-100GB as per available storage
-4. After it you will see unallocated space, this is the space that Arch will use.
+4. After shrinking, you will see unallocated space which Arch Linux will use.
 
 ---
 
@@ -164,7 +164,7 @@ Select the free space and make sure `New` is selected on command bar at the bott
 
     3. Create remaining type Linux filesystem partition
 
-write the changes to the disk and quit
+    4. Write the changes to the disk and quit
 ```bash
 # Formats the following partition as FAT-32 (File Access Table)
 mkfs.fat -F32 /dev/[efi_partition_name]
@@ -226,7 +226,7 @@ fastfetch
 # Sets the password for the ROOT user
 passwd
 ```
-type the password
+Type the password
 
 ```bash
 # Creates a New user and gives them permissions
@@ -236,13 +236,13 @@ useradd -m -g users -G wheel,storage,power,video,audio -s /bin/bash [username]
 # Sets the password for the user with the given username
 passwd [username]
 ```
-type the password
+Type the password
 
 ```bash
 # Use nano editor and modify user and group permissions
 EDITOR=nano visudo
 ```
-scroll and uncomment `%wheel ALL=(ALL:ALL) ALL`
+Scroll and uncomment `%wheel ALL=(ALL:ALL) ALL`
 This will make the user with wheel group kind of like Administrator
 Ctrl+O to save changes, Ctrl+X to exit
 
@@ -270,7 +270,7 @@ hwclock --systohc
 # Open the local.gen file so that we can generate locale files
 nano /etc/locale.gen
 ```
-scroll and uncomment `en_US.UTF-8 UTF-8`
+Scroll and uncomment `en_US.UTF-8 UTF-8`
 
 ```bash
 # Generate the locale based on locale.gen file
@@ -291,7 +291,7 @@ write `archlinux` or whatever you prefer
 # Configure default hostname mappings with ip addresses
 nano /etc/hosts
 ```
-type the following after 2 line gap 
+Type the following after 2 line gap 
 
 <img 
     src="/images/LinuxGuides/ArchLinux-Hostnames.png" 
@@ -359,9 +359,9 @@ sudo pacman -Syu
 ```bash
 sudo nano /etc/default/grub
 ```
-set grub timeout to 20 sec
+Set GRUB timeout to 20 sec
 
-uncomment grub disable os prober = false
+Uncomment grub disable os prober = false
 This will make you able to boot into Windows
 you will see a new option in grub named "Windows..."
 
