@@ -18,7 +18,55 @@ Download Arch linux iso file from https://archlinux.org
 
 Burn the downloaded iso into a pendrive or SD card using [Balena Etcher](https://etcher.balena.io/) _(great tool for beginners)_, [Rufus](https://rufus.ie/en/) or [Ventoy](https://www.ventoy.net/en/)
 
-Go into BIOS and disable Secure Boot
+#### 💡 Check: Is your system UEFI or BIOS?
+
+On **Windows**:
+1. Press `Win + R`, type `msinfo32` and press Enter
+2. Look for **"BIOS Mode"**:
+   - If it says **UEFI**, choose **GPT**
+   - If it says **Legacy**, choose **MBR**
+
+---
+
+#### 🔧 Example using Rufus (Windows):
+
+1. Download and open [Rufus](https://rufus.ie/en/)
+2. Insert your USB drive
+3. Set the following:
+   - **Device**: Select your USB drive
+   - **Boot selection**: Click **SELECT** and choose the `archlinux-*.iso` file
+   - **Partition scheme**:
+     - Use **MBR** for Legacy BIOS boot
+     - Use **GPT** for UEFI boot
+   - **File system**: Leave as **FAT32**
+4. Click **START**
+5. If prompted, choose **"Write in ISO Image mode (Recommended)"**
+6. Wait until it finishes flashing the ISO
+
+Your USB is now ready to boot into Arch Linux.
+
+---
+
+#### Shrinking Windows Partition
+
+1. Open Disk Management (Win + X → Disk Management)
+2. Right-click C: → Shrink Volume
+3. Enter amount in MB, ideal is to shrink around 50GB-100GB as per available storage
+4. After shrinking, you will see unallocated space which Arch Linux will use.
+
+---
+
+#### Entering in BIOS
+1. Restart your PC
+2. As soon as it turns on, press the BIOS key repeatedly
+Common keys:
+    - F2 (Dell, Lenovo, Acer, ASUS)
+    - Del (MSI, ASUS desktops)
+    - F10 / Esc (HP)
+    - F12 (boot menu on many systems)
+3. Disable Secure Boot
+4. Set USB as first boot device (in Boot Order)
+
 ## Boot Into the Pendrive
 Type the following commands
 ```bash
@@ -66,17 +114,57 @@ This is a very __delicate__ step, slightest mistakes will lead to complete wipin
 # Lets you see the partitions
 lsblk
 ```
+
+<img 
+    src="/images/LinuxGuides/ArchPartition.png"
+    alt="Arch Partition Image"
+    className="rounded-lg"
+/>
+
 ```bash
 # A utility to help you partition your disks
 cfdisk /dev/nvme0n1
 ```
-create 800M type EFI system partition
 
-create 8G (or whatever your ram is) type Linux swap partition
+<img 
+    src="/images/LinuxGuides/ArchPartitionTable.png"
+    alt="Arch Partition Table Image"
+    className="rounded-lg"
+/>
 
-create remaining type Linux filesystem partition
+Select the free space and make sure `New` is selected on command bar at the bottom
 
-write the changes to the disk and quit
+    1. Create 800M type EFI system partition
+        <img 
+            src="/images/LinuxGuides/ArchCreatePartition.png"
+            alt="Arch Create Partition Image"
+            className="rounded-lg"
+        />
+
+        - Press `Enter`
+
+        <img 
+            src="/images/LinuxGuides/ArchPartitionTypes.png"
+            alt="Arch Partition Types Image"
+            className="rounded-lg"
+        />
+
+        - Select the newly created partition (i.e p5 here).
+        - Go on `Type` and press `Enter`.
+
+        <img 
+            src="/images/LinuxGuides/ArchSelectPartitionType.png"
+            alt="Arch Select Partition Type Image"
+            className="rounded-lg"
+        />
+
+        - Choose EFI
+
+    2. Create 8G (or whatever your ram is) type Linux swap partition
+
+    3. Create remaining type Linux filesystem partition
+
+    4. Write the changes to the disk and quit
 ```bash
 # Formats the following partition as FAT-32 (File Access Table)
 mkfs.fat -F32 /dev/[efi_partition_name]
@@ -138,7 +226,7 @@ fastfetch
 # Sets the password for the ROOT user
 passwd
 ```
-type the password
+Type the password
 
 ```bash
 # Creates a New user and gives them permissions
@@ -148,13 +236,13 @@ useradd -m -g users -G wheel,storage,power,video,audio -s /bin/bash [username]
 # Sets the password for the user with the given username
 passwd [username]
 ```
-type the password
+Type the password
 
 ```bash
 # Use nano editor and modify user and group permissions
 EDITOR=nano visudo
 ```
-scroll and uncomment `%wheel ALL=(ALL:ALL) ALL`
+Scroll and uncomment `%wheel ALL=(ALL:ALL) ALL`
 This will make the user with wheel group kind of like Administrator
 Ctrl+O to save changes, Ctrl+X to exit
 
@@ -182,7 +270,7 @@ hwclock --systohc
 # Open the local.gen file so that we can generate locale files
 nano /etc/locale.gen
 ```
-scroll and uncomment `en_US.UTF-8 UTF-8`
+Scroll and uncomment `en_US.UTF-8 UTF-8`
 
 ```bash
 # Generate the locale based on locale.gen file
@@ -203,7 +291,7 @@ write `archlinux` or whatever you prefer
 # Configure default hostname mappings with ip addresses
 nano /etc/hosts
 ```
-type the following after 2 line gap 
+Type the following after 2 line gap 
 
 <img 
     src="/images/LinuxGuides/ArchLinux-Hostnames.png" 
@@ -271,9 +359,9 @@ sudo pacman -Syu
 ```bash
 sudo nano /etc/default/grub
 ```
-set grub timeout to 20 sec
+Set GRUB timeout to 20 sec
 
-uncomment grub disable os prober = false
+Uncomment grub disable os prober = false
 This will make you able to boot into Windows
 you will see a new option in grub named "Windows..."
 
