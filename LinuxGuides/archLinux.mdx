@@ -18,7 +18,53 @@ Download Arch linux iso file from https://archlinux.org
 
 Burn the downloaded iso into a pendrive or SD card using [Balena Etcher](https://etcher.balena.io/) _(great tool for beginners)_, [Rufus](https://rufus.ie/en/) or [Ventoy](https://www.ventoy.net/en/)
 
-Go into BIOS and disable Secure Boot
+#### 💡 Check: Is your system UEFI or BIOS?
+
+On **Windows**:
+1. Press `Win + R`, type `msinfo32` and press Enter
+2. Look for **"BIOS Mode"**:
+   - If it says **UEFI**, choose **GPT**
+   - If it says **Legacy**, choose **MBR**
+
+---
+
+#### 🔧 Example using Rufus (Windows):
+
+1. Download and open [Rufus](https://rufus.ie/en/)
+2. Insert your USB drive
+3. Set the following:
+   - **Device**: Select your USB drive
+   - **Boot selection**: Click **SELECT** and choose the `archlinux-*.iso` file
+   - **Partition scheme**:
+     - Use **MBR** for Legacy BIOS boot
+     - Use **GPT** for UEFI boot
+   - **File system**: Leave as **FAT32**
+4. Click **START**
+5. If prompted, choose **"Write in ISO Image mode (Recommended)"**
+6. Wait until it finishes flashing the ISO
+
+Your USB is now ready to boot into Arch Linux.
+
+---
+
+### Shrinking Windows Partition
+
+1. Open Disk Management (Win + X → Disk Management)
+2. Right-click C: → Shrink Volume(Enter amount in MB), ideal is to shrink around 50GB-100GB as per available
+ storage
+3. After it you will see unallocated space, this is the space that Arch will use.
+
+### Entering in BIOS
+1. Restart your PC
+2. As soon as it turns on, press the BIOS key repeatedly
+Common keys:
+    - F2 (Dell, Lenovo, Acer, ASUS)
+    - Del (MSI, ASUS desktops)
+    - F10 / Esc (HP)
+    - F12 (boot menu on many systems)
+3. Disable Secure Boot
+4. Set USB as first boot device (in Boot Order)
+
 ## Boot Into the Pendrive
 Type the following commands
 ```bash
