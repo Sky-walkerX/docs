@@ -112,15 +112,31 @@ This is a very __delicate__ step, slightest mistakes will lead to complete wipin
 # Lets you see the partitions
 lsblk
 ```
+
+<img 
+    src="/images/LinuxGuides/ArchPartition.png"
+    alt="Arch Partition Image"
+    className="rounded-lg"
+/>
+
 ```bash
 # A utility to help you partition your disks
 cfdisk /dev/nvme0n1
 ```
-create 800M type EFI system partition
 
-create 8G (or whatever your ram is) type Linux swap partition
+<img 
+    src="/images/LinuxGuides/ArchPartitionTable.png"
+    alt="Arch Partition Table Image"
+    className="rounded-lg"
+/>
 
-create remaining type Linux filesystem partition
+Select the free space and make sure `New` is selected on command bar at the bottom
+
+    - Create 800M type EFI system partition
+
+    - Create 8G (or whatever your ram is) type Linux swap partition
+
+    - Create remaining type Linux filesystem partition
 
 write the changes to the disk and quit
 ```bash
