@@ -50,8 +50,7 @@ Your USB is now ready to boot into Arch Linux.
 #### Shrinking Windows Partition
 
 1. Open Disk Management (Win + X → Disk Management)
-2. Right-click C: → Shrink Volume(Enter amount in MB), ideal is to shrink around 50GB-100GB as per available
- storage
+2. Right-click C: → Shrink Volume(Enter amount in MB), ideal is to shrink around 50GB-100GB as per available storage
 3. After it you will see unallocated space, this is the space that Arch will use.
 
 #### Entering in BIOS
@@ -132,11 +131,35 @@ cfdisk /dev/nvme0n1
 
 Select the free space and make sure `New` is selected on command bar at the bottom
 
-    - Create 800M type EFI system partition
+    1. Create 800M type EFI system partition
+        <img 
+            src="/images/LinuxGuides/ArchCreatePartition.png"
+            alt="Arch Create Partition Image"
+            className="rounded-lg"
+        />
 
-    - Create 8G (or whatever your ram is) type Linux swap partition
+        - Press `Enter`
 
-    - Create remaining type Linux filesystem partition
+        <img 
+            src="/images/LinuxGuides/ArchPartitionTypes.png"
+            alt="Arch Partition Types Image"
+            className="rounded-lg"
+        />
+
+        - Select the newly created partition (i.e p5 here).
+        - Go on `Type` and press `Enter`.
+
+        <img 
+            src="/images\LinuxGuides\ArchSelectPartitionType.png"
+            alt="Arch Select Partition Type Image"
+            className="rounded-lg"
+        />
+
+        - Choose EFI
+
+    2. Create 8G (or whatever your ram is) type Linux swap partition
+
+    3. Create remaining type Linux filesystem partition
 
 write the changes to the disk and quit
 ```bash
