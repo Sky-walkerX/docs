@@ -8,15 +8,13 @@ Its partitioning step is very risky for Beginners
 </Tip>
 
 <img 
-    src="/images/LinuxGuides/ArchLinux-Logo.png"
+    src="/images/LinuxGuides/ArchLinux/Logo.png"
     alt="Arch Linux Logo"
-    className="rounded-lg"
+    className="rounded-lg w-full"
 />
-## Burning the ISO
+## Download the ISO
 
 Download Arch linux iso file from https://archlinux.org
-
-Burn the downloaded iso into a pendrive or SD card using [Balena Etcher](https://etcher.balena.io/) _(great tool for beginners)_, [Rufus](https://rufus.ie/en/) or [Ventoy](https://www.ventoy.net/en/)
 
 #### 💡 Check: Is your system UEFI or BIOS?
 
@@ -28,10 +26,14 @@ On **Windows**:
 
 ---
 
-#### 🔧 Example using Rufus (Windows):
+## Burning the ISO
+
+Burn the downloaded iso into a pendrive or SD card using [Balena Etcher](https://etcher.balena.io/) _(great tool for beginners)_, [Rufus](https://rufus.ie/en/) or [Ventoy](https://www.ventoy.net/en/)
+
+#### Example using Rufus:
 
 1. Download and open [Rufus](https://rufus.ie/en/)
-2. Insert your USB drive
+2. Insert your USB drive (Make sure there is no important data on the USB as it will get wiped out)
 3. Set the following:
    - **Device**: Select your USB drive
    - **Boot selection**: Click **SELECT** and choose the `archlinux-*.iso` file
@@ -116,9 +118,9 @@ lsblk
 ```
 
 <img 
-    src="/images/LinuxGuides/ArchPartition.png"
+    src="/images/LinuxGuides/ArchLinux/Partition.png"
     alt="Arch Partition Image"
-    className="rounded-lg"
+    className="rounded-lg w-full"
 />
 
 ```bash
@@ -127,35 +129,35 @@ cfdisk /dev/nvme0n1
 ```
 
 <img 
-    src="/images/LinuxGuides/ArchPartitionTable.png"
+    src="/images/LinuxGuides/ArchLinux/PartitionTable.png"
     alt="Arch Partition Table Image"
-    className="rounded-lg"
+    className="rounded-lg w-full"
 />
 
 Select the free space and make sure `New` is selected on command bar at the bottom
 
-    1. Create 800M type EFI system partition
+    1. Create 512M type EFI system partition
         <img 
-            src="/images/LinuxGuides/ArchCreatePartition.png"
+            src="/images/LinuxGuides/ArchLinux/CreatePartition.png"
             alt="Arch Create Partition Image"
-            className="rounded-lg"
+            className="rounded-lg w-full"
         />
 
         - Press `Enter`
 
         <img 
-            src="/images/LinuxGuides/ArchPartitionTypes.png"
+            src="/images/LinuxGuides/ArchLinux/PartitionTypes.png"
             alt="Arch Partition Types Image"
-            className="rounded-lg"
+            className="rounded-lg w-full"
         />
 
         - Select the newly created partition (i.e p5 here).
         - Go on `Type` and press `Enter`.
 
         <img 
-            src="/images/LinuxGuides/ArchSelectPartitionType.png"
+            src="/images/LinuxGuides/ArchLinux/SelectPartitionType.png"
             alt="Arch Select Partition Type Image"
-            className="rounded-lg"
+            className="rounded-lg w-full"
         />
 
         - Choose EFI
@@ -202,6 +204,7 @@ Check if they are mounted properly using lsblk command
 #   fastfetch               => view your system info
 #   bluez and bluez-utils   => for bluetooth support
 #   btop                    => task manager for linux
+#   reflector               => to update mirrorlist
 #   nano                    => minimal terminal based text-editor
 
 # Replace intel-ucode with amd-ucode if you have an AMD Processor
@@ -221,6 +224,13 @@ arch-chroot /mnt
 ```
 ```bash
 fastfetch
+```
+##### Setup Reflector
+```bash
+# Backup Old Mirrorlist
+cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+
+reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 ```
 ```bash
 # Sets the password for the ROOT user
@@ -294,9 +304,9 @@ nano /etc/hosts
 Type the following after 2 line gap 
 
 <img 
-    src="/images/LinuxGuides/ArchLinux-Hostnames.png" 
+    src="/images/LinuxGuides/ArchLinux/Hostnames.png" 
     alt="Hosts File"
-    className="rounded-lg"
+    className="rounded-lg w-full"
 />
 ```bash
 # Install packages required to set GRUB as bootloader
@@ -304,6 +314,7 @@ pacman -S grub efibootmgr dosfstools mtools
 ```
 ```bash
 # Install GRUB
+# This step is according to your harware check your system type and set the target according to it
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 ```
 ```bash
@@ -378,9 +389,9 @@ Files starting with a `.` are called Dotfiles, these are hidden and generally co
 
 ### End-4 Dots
 <img 
-    src="/images/LinuxGuides/Dotfiles/End-4.png"
+    src="/images/LinuxGuides/ArchLinux/Dotfiles/End-4.png"
     alt="ML4W Dotfile Screenshot"
-    className="rounded-lg"
+    className="rounded-lg w-full"
 />
 [Official Repo](https://github.com/end-4/dots-hyprland)
 ```bash
@@ -389,9 +400,9 @@ bash <(curl -s "https://end-4.github.io/dots-hyprland-wiki/setup.sh")
 
 ### HyDE (Formerly Hyprdots)
 <img 
-    src="/images/LinuxGuides/Dotfiles/HyDE.png"
+    src="/images/LinuxGuides/ArchLinux/Dotfiles/HyDE.png"
     alt="ML4W Dotfile Screenshot"
-    className="rounded-lg"
+    className="rounded-lg w-full"
 />
 [Official Repo](https://github.com/Hyde-project/hyde)
 ```bash
@@ -403,9 +414,9 @@ cd ~/HyDE/Scripts
 
 ### ML4W Dotfiles
 <img 
-    src="/images/LinuxGuides/Dotfiles/ML4W.png"
+    src="/images/LinuxGuides/ArchLinux/Dotfiles/ML4W.png"
     alt="ML4W Dotfile Screenshot"
-    className="rounded-lg"
+    className="rounded-lg w-full"
 />
 [Official Repo](https://github.com/mylinuxforwork/dotfiles)
 ```bash

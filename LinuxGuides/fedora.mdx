@@ -2,3 +2,241 @@
 title: 'Fedora'
 description: 'Easiest out of them all. Ubuntu like interface and great for Beginners'
 ---
+<Tip>
+If you don't know much about Linux and stuff, go with this one. You won't regret it
+</Tip>
+
+<img 
+    src="/images/LinuxGuides/Fedora/Logo.png"
+    alt="Fedora Logo"
+    className="rounded-lg w-full"
+/>
+
+## Booting into Fedora
+
+### Download the ISO
+
+Download Fedora Workstation iso file from https://fedoraproject.org/workstation/download
+
+### Burning the ISO
+
+Burn the downloaded iso into a pendrive or SD card (atleast 8GB) using [Balena Etcher](https://etcher.balena.io/) _(great tool for beginners)_, [Rufus](https://rufus.ie/en/) or [Ventoy](https://www.ventoy.net/en/)
+
+#### Example using Balena Etcher:
+
+1. Download and open [Balena Etcher](https://etcher.balena.io/)
+2. Insert your USB drive (Make sure there is no important data on the USB as it will get wiped out)
+
+<img 
+    src="/images/LinuxGuides/Fedora/BalenaEtcher.png" 
+    alt="Balena Etcher"
+    className="rounded-lg w-full"
+/>
+
+3. Set the following:
+   - **File**: Select the Downloaded ISO file
+   - **Target**: Select your USB drive
+4. Click **Flash!**
+6. Wait until it finishes flashing the ISO
+
+Your USB is now ready to boot into Fedora.
+
+---
+
+### Shrinking Windows Partition
+
+1. Open Disk Management (Win + X → Disk Management)
+2. Right-click C: → Shrink Volume
+3. Enter amount in MB, ideal is to shrink around 50GB-100GB as per available storage
+4. After shrinking, you will see unallocated space which Fedora will use.
+
+---
+
+### Booting into USB
+1. Restart your PC
+2. As soon as it turns on, press the Boot Menu key repeatedly
+Common keys:
+    - F12 (Dell, Lenovo, Acer)
+    - Esc (HP, ASUS)
+    - F11 (MSI)
+3. Select USB (would be named Fedora or something)
+
+<img 
+    src="/images/LinuxGuides/Fedora/InstallOrTest.png" 
+    alt="Install or Test"
+    className="rounded-lg w-full"
+/>
+
+4. You'll be presented with choice to install, or you can first check if your system is compatible with fedora and everything will work properly after install or not. Or you can click install right away.
+
+---
+
+## Welcome to Fedora
+If you've followed well, you'll be welcomed by the following screen, go ahead and click "Install"
+
+<img 
+    src="/images/LinuxGuides/Fedora/Welcome.png" 
+    alt="Welcome to Fedora"
+    className="rounded-lg w-full"
+/>
+
+### Installation
+
+#### Language
+- Select your preferred language for the installation process. This will not affect the system language, which you can change later.
+- Click **Continue** to proceed to the next step.
+
+#### Installation Destination
+- Here, you can choose where to install Fedora and there are 3 ways to do it.
+  1. **Shared Disk with other operating systems**: This option allows you to install Fedora alongside another operating system (like Windows) on the same disk and it will partition automatically.
+  2. **Use Entire Disk**: This option will erase all data on the selected disk and use the entire disk for Fedora. So be careful with this option as it will delete all existing data on the disk.
+  3. **Mount Point Assignment**: This allows you to mount already existing partitions so it's useless for us as we haven't created the partitions yet.
+  4. **Custom Storage Configuration**: This option allows you to manually create and configure partitions for Fedora and this is what we will be doing.
+
+- If you are going with any of the first three options, you can skip to the next section, but if you want to create custom partitions, follow the steps below.
+- Launch the storage editor by clicking on the menu icon in the top right corner of the screen.
+
+<img 
+    src="/images/LinuxGuides/Fedora/StorageEditor.jpg" 
+    alt="Storage Editor"
+    className="rounded-lg w-full"
+/>
+
+- In the storage editor, select the unallocated space you created earlier and click on the **+** button to create a new partition.
+
+- We will create 3 partitions:
+  1. **EFI Partition**: If your system uses UEFI, you need an EFI partition.
+     - **Size**: 512MB
+     - **Type**: EFI System Partition
+     - **Mount Point**: /boot/efi
+    
+    <img 
+        src="/images/LinuxGuides/Fedora/EFI.jpg" 
+        alt="EFI Partition"
+        className="rounded-lg w-full"
+    />
+
+    <Danger>
+      <p>The size is written wrong in image, it should be 512MB, other things are correct.</p>
+    </Danger>
+
+  2. **Swap Partition**: This is used for swapping memory when RAM is full.
+     - **Size**: Equal to your RAM size (or double if you have less than 4GB RAM)
+     - **Type**: Swap
+
+    <img 
+        src="/images/LinuxGuides/Fedora/Swap.jpg" 
+        alt="Swap Partition"
+        className="rounded-lg w-full"
+    />
+
+    <Danger>
+      <p>Again the size is written wrong in image, so be careful.</p>
+    </Danger>
+
+  3. **Root Partition**: This is where the operating system will be installed.
+     - **Size**: All the remaining space
+     - **Type**: EXT4 (recommended) or BTRFS (if you want to use BTRFS)
+     - **Mount Point**: /
+
+    <img 
+        src="/images/LinuxGuides/Fedora/Root.jpg" 
+        alt="Root Partition"
+        className="rounded-lg w-full"
+    />
+
+- After creating the partitions, click **Return To Installation** and then continue with the Popup, make sure it says something like what the below image is showing.
+
+<img 
+    src="/images/LinuxGuides/Fedora/ConfirmMounted.jpg" 
+    alt="Return to Installation"
+    className="rounded-lg w-full"
+/>
+
+- You will now see something like this in the Installation Destination screen
+
+<img
+    src="/images/LinuxGuides/Fedora/UseConfiguredStorage.jpg" 
+    alt="Custom Storage Configuration"
+    className="rounded-lg w-full"
+/>
+
+- Click **Next** to proceed to the next step.
+
+<img 
+    src="/images/LinuxGuides/Fedora/Install.jpg" 
+    alt="Review and Install"
+    className="rounded-lg w-full"
+/>
+
+- Review the installation settings and make sure everything is correct. If you are satisfied with the settings, click **Install** to start the installation process.
+
+<img 
+    src="/images/LinuxGuides/Fedora/Done.jpg" 
+    alt="Done"
+    className="rounded-lg w-full"
+/>
+
+- And there we go, the installation is complete! You can now click **Exit To Live Desktop** and reboot from top right menu opened by clicking on the battery and related icons in the top bar. 
+- You can now remove the USB drive and boot into your newly installed Fedora system and continue finalizing it.
+
+### Finalizing the Installation
+
+#### Language and Keyboard
+- Select the language you’d like to use.
+- Next, select your keyboard layout. (I recommend using US English for least hassle)
+
+<img 
+    src="/images/LinuxGuides/Fedora/LanguageAndKeyboard.png" 
+    alt="Language and Keyboard"
+    className="rounded-lg w-full"
+/>
+
+#### Privacy and Location
+- Totally your choice, I prefer to disable both options, but you can enable them if you want. (Location is useful for weather and stuff)
+
+#### Timezone
+- Select your timezone from the map or the list. This will set the system clock to your local time. For us its Asia/Kolkata
+
+#### Third-Party Repositories
+- You can enable third-party repositories to install proprietary software, codecs, and drivers. This is optional, but I suggest enabling it to be able to install additional software easily.
+
+<img 
+    src="/images/LinuxGuides/Fedora/ThirdParty.png" 
+    alt="Third Party Repositories"
+    className="rounded-lg w-full"
+/>
+
+#### About You
+- Enter your full name and username to create a user account. This will be the account you use to log in to your Fedora system.
+- Create a strong password for your account. I suggest writing that down somewhere safe, as you will need it to log in and many people forget it.
+
+<img 
+    src="/images/LinuxGuides/Fedora/Profile.png" 
+    alt="About You"
+    className="rounded-lg w-full"
+/>
+
+- Follow the prompts to complete the setup process. And its done! You can now start using Fedora.
+
+### Post Installation
+
+#### Update the System
+- After logging in, it's a good idea to update your system to ensure you have the latest software and security patches.
+- Open the terminal and run the following command to update the system:
+```bash
+sudo dnf up
+```
+- This will update all the installed packages to their latest versions.
+
+#### Install Additional Software
+
+- You can install additional software using the `dnf` package manager. For example, to install the VLC media player, run:
+```bash
+sudo dnf install vlc
+```
+
+- You can search for packages using:
+```bash
+dnf search <package-name>
+```
